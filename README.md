@@ -313,7 +313,7 @@ This approach significantly reduces repetitive coding while keeping your project
 
 ---
 
-# 🤝 Contributing
+# Contributing
 
 Contributions are always welcome!
 
@@ -321,14 +321,14 @@ If you have ideas, improvements, or bug fixes, feel free to fork this repository
 
 ---
 
-# 📄 License
+# License
 
 This project is licensed under the **MIT License**.
 
 ---
 
-# ❤️ Author
+# Author
 
-Developed with ❤️ using Laravel.
+Developed with using Laravel.
 
-If this project helps you, don't forget to ⭐ star the repository.
+If this project helps you, don't forget to star the repository.
