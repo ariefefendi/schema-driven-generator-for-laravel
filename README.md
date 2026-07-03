@@ -327,14 +327,7 @@ This project is licensed under the **MIT License**.
 
 ---
 
-# Author
-
-
-
-If this project helps you, don't forget to star the repository.
-
-
-## 👨‍💻 About the Author
+## About the Author
 
 **Arif Efendi** is a Full Stack Web Developer and Founder of **Kazuya Media Indonesia**, specializing in Laravel, PHP, RESTful APIs, OCR solutions, authentication systems, and developer productivity tools.
 
