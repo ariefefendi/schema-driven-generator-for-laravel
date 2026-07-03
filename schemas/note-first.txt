@@ -1,0 +1,120 @@
+
+graph_nodes : 
+📌 Modul: Representasi Graf
+📌 Digunakan untuk: Menyimpan simpul dalam graf jalur
+
+graph_edges : 
+📌 Modul: Algoritma Shortest Path
+📌 Digunakan untuk: Menyimpan relasi antar node + bobot jarak & waktu (ETA)
+
+tourism_management : 
+📌 Modul: Manajemen Destinasi Wisata
+📌 Digunakan untuk: Menghubungkan lokasi wisata dengan node dalam graf
+
+
+
+
+
+create role : 
+1. php artisan make:migration create_roles_table
+        isi bagian up : 
+          Schema::create('roles', function (Blueprint $table) {
+                    $table->id();
+                    $table->string('name')->unique(); // admin, operator, driver
+                    $table->string('description')->nullable();
+                    $table->timestamps();
+                });
+
+2. php artisan make:seeder RolesTableSeeder
+
+        isi dengan : 
+            Role::create([
+                'name' => 'admin',
+                'description' => 'Full access to system'
+            ]);
+    
+            Role::create([
+                'name' => 'operator',
+                'description' => 'Manage tourism and graph data'
+            ]);
+    
+            Role::create([
+                'name' => 'driver',
+                'description' => 'App user for tracking and route'
+            ]);
+3. daftarkan seeder , di databaseseeder.php
+        $this->call([
+            RolesTableSeeder::class,
+        ]);
+        
+4. php artisan migrate --seed
+
+
+5. jangan lupa buat Role model nya : 
+        php artisan make:model Role 
+    isi dengan : 
+        protected $fillable = [
+            'name',
+            'description'
+        ];
+    
+        public function users()
+        {
+            return $this->hasMany(User::class);
+        }
+
+
+NB. :: hati hati menggunakan ini, kalo salah langkah data bisa hilang semuanya. backup dulu biar aman ya.
+jika sudah ada error sebelumnya :
+    php artisan migrate:fresh --seed
+    
+    
+    jika di ulangi dan error maka hapus file 
+        - 2026_02_11_014922_create_refresh_tokens_table
+        - 2026_02_11_014938_create_otp_codes_table
+    di folder migrations
+    
+    
+    ulangi lagi : php artisan migrate:fresh --seed 
+                    atau php artisan migrate
+                    
+                    
+                    
+
+
+
+DefaultUsersSeeder
+php artisan make:seeder DefaultUsersSeeder
+
+    isikan ini : 
+        $adminRole = Role::where('name', 'admin')->first();
+        $operatorRole = Role::where('name', 'operator')->first();
+        $driverRole = Role::where('name', 'driver')->first();
+
+        // Admin
+        User::create([
+            'name' => 'Administrator',
+            'email' => 'admin@smartroute.com',
+            'password' => Hash::make('password'),
+            'role_id' => $adminRole->id,
+        ]);
+
+        // Operator
+        User::create([
+            'name' => 'Operator',
+            'email' => 'operator@smartroute.com',
+            'password' => Hash::make('password'),
+            'role_id' => $operatorRole->id,
+        ]);
+
+        // Driver
+        User::create([
+            'name' => 'Driver User',
+            'email' => 'driver@smartroute.com',
+            'password' => Hash::make('password'),
+            'role_id' => $driverRole->id,
+        ]);
+lalu : 
+php artisan migrate:fresh --seed
+
+

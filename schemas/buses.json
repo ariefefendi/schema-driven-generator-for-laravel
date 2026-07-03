@@ -1,0 +1,42 @@
+{
+  "module": "transportation_management",
+  "table": "buses",
+  "primary_key": "id",
+  "soft_delete": false,
+  "timestamps": true,
+  "auth": {
+    "roles": ["admin"]
+  },
+  "fields": [
+    {
+      "name": "bus_code",
+      "type": "string",
+      "length": 50,
+      "required": true,
+      "unique": true
+    },
+    {
+      "name": "plate_number",
+      "type": "string",
+      "length": 20,
+      "required": true,
+      "unique": true
+    },
+    {
+      "name": "capacity",
+      "type": "integer",
+      "required": false
+    },
+    {
+      "name": "status",
+      "type": "enum",
+      "values": [
+        "active",
+        "maintenance",
+        "inactive"
+      ],
+      "default": "active",
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "module": "authentication",
+  "table": "users",
+  "primary_key": "id",
+  "soft_delete": false,
+  "timestamps": true,
+  "relationships": {
+    "belongs_to": {
+      "table": "roles",
+      "foreign_key": "role_id",
+      "owner_key": "id"
+    }
+  },
+  "fields": [
+    {
+      "name": "role_id",
+      "type": "bigint",
+      "unsigned": true,
+      "foreign_key": true,
+      "required": true,
+      "description": "Relasi ke tabel roles (admin, operator, driver)"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "length": 100,
+      "required": true
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "length": 150,
+      "unique": true,
+      "required": true
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "phone",
+      "type": "string",
+      "length": 20,
+      "required": false
+    }
+  ]
+}

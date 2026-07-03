@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
+use App\Models\{{ModelName}};
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash; 
+use Illuminate\Support\Facades\Validator;
+use App\Services\RoleViewService;
+
+class {{ControllerName}} extends Controller
+{
+	public function index()
+	{ 
+		if (!auth()->check()) { 
+            return redirect()->route('login'); 
+        }
+        
+        return RoleViewService::roleView(
+            auth()->user()->role->name,
+            '{{ModelName}}View'
+        );
+	}
+	
+    /**
+     * Datatable Server Side
+     */
+    public function getDataAll(Request $request)
+    {
+        $allowedFilter = {{allowedFilter}}; // dari schema
+
+        $filterValue = $request->input('filtervalue');
+        $filterText  = $request->input('filtertext');
+        $start       = $request->input('start', 0);
+        $length      = $request->input('length', 10);
+
+        if (!in_array($filterValue, $allowedFilter)) {
+            return response()->json([
+                'RecordsTotal' => 0,
+                'RecordsFiltered' => 0,
+                'Data' => []
+            ]);
+        }
+
+        // Total semua data TANPA filter
+        $recordsTotal = {{ModelName}}::count();
+        
+        // Query utama
+        // contoh untuk relasi : Users::with('role:id,name')
+        $query = {{ModelName}}::query();
+
+        // Apply filter jika ada
+        if ($filterText && in_array($filterValue, $allowedFilter)) {
+            $query->where($filterValue, 'LIKE', "%{$filterText}%");
+        }
+        
+        // Total setelah filter
+        $recordsFiltered = $query->count();
+ 
+        $data = $query->orderBy('{{primaryKey}}', 'desc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        return response()->json([
+            'RecordsTotal'    => $recordsTotal,
+            'RecordsFiltered' => $recordsFiltered,
+            'Data'            => $data
+        ]);
+    }
+
+    /**
+     * Get single data
+     */
+    public function getDataSelect(Request $request)
+    {
+        return {{ModelName}}::findOrFail($request->id);
+    }
+
+    /**
+     * Insert
+     */
+    public function insert(Request $request)
+    {
+        $validator = Validator::make($request->all(), {{validationRules}});
+
+        if ($validator->fails()) {
+            return response()->json([
+                'result' => 'VALIDATION_ERROR',
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        {{ModelName}}::create($request->all());
+
+        return response()->json(['result' => 'OK']);
+    }
+
+    /**
+     * Update
+     */
+    public function update(Request $request)
+    {
+        $data = {{ModelName}}::findOrFail($request->{{primaryKey}});
+        $data->update($request->all());
+
+        return response()->json(['result' => 'OK']);
+    }
+
+    /**
+     * Delete
+     */
+    public function destroy(Request $request)
+    {
+        {{ModelName}}::where('{{primaryKey}}', $request->id)->delete();
+        return response()->json(['result' => 'OK']);
+    }
+}

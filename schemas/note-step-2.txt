@@ -1,0 +1,91 @@
+create Login Auth 
+
+with flow : 
+
+## Login Flow (Session-Based)
+1. User input username & password
+2. Backend cek:
+    - Username ada?
+    - Password match (verify hash)?
+3. Jika valid:
+    - Simpan session:
+    $_SESSION['user_id']
+    $_SESSION['role']
+4. Redirect ke by role
+5. Middleware cek session
+
+
+php artisan make:controller AuthController
+ - isikan logic auth
+
+php artisan make:middleware CheckSession
+
+waktunya : 
+4️⃣ Gunakan di Routes
+
+
+
+
+
+gunakan ini untuk : Refresh Autoload
+    composer dump-autoload
+    php artisan optimize:clear
+
+
+
+jika ada perubahan route maka : 
+    php artisan route:clear
+    php artisan optimize:clear
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+tambahan table :
+ CREATE TABLE bus_schedules (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    bus_id BIGINT UNSIGNED NULL,
+    driver_id BIGINT UNSIGNED NOT NULL,
+
+    start_node_id BIGINT UNSIGNED NOT NULL,
+    end_node_id BIGINT UNSIGNED NOT NULL,
+
+    total_distance DECIMAL(10,2) NULL,
+    estimated_duration INT NULL COMMENT 'minutes',
+
+    departure_day ENUM(
+        'monday','tuesday','wednesday',
+        'thursday','friday','saturday','sunday'
+    ) NOT NULL,
+
+    departure_time TIME NOT NULL,
+    expected_arrival_time DATETIME NULL,
+
+    actual_departure_time DATETIME NULL,
+    actual_arrival_time DATETIME NULL,
+
+    status ENUM(
+        'scheduled',
+        'departed',
+        'arrived',
+        'completed',
+        'cancelled'
+    ) DEFAULT 'scheduled',
+
+    notes TEXT NULL,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    INDEX(driver_id),
+    INDEX(start_node_id),
+    INDEX(end_node_id)
+);
