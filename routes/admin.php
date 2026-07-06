@@ -33,13 +33,6 @@ Route::middleware(['auth', 'role:admin'])
             Route::post('insert', [BusesController::class, 'insert']);
             Route::post('update', [BusesController::class, 'update']);
             Route::delete('delete', [BusesController::class, 'destroy']);
-        });
-
-    
-        
-        Route::prefix('import')->group(function () {
-            Route::post('/csv', [ImportController::class, 'importCsv']);
-        });
-         
+        });         
         
 });
