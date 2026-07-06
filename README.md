@@ -154,22 +154,45 @@ Example:
 
 ```json
 {
-    "table": "products",
-    "columns": [
-        {
-            "name": "name",
-            "type": "string",
-            "required": true
-        },
-        {
-            "name": "price",
-            "type": "decimal"
-        },
-        {
-            "name": "stock",
-            "type": "integer"
-        }
-    ]
+  "module": "products_management",
+  "table": "products",
+  "primary_key": "id",
+  "soft_delete": false,
+  "timestamps": true,
+  "auth": {
+    "roles": ["admin"]
+  },
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "length": 50,
+      "required": true,
+      "unique": true
+    },
+    {
+      "name": "price",
+      "type": "integer",
+      "length": 20,
+      "required": true,
+      "unique": true
+    },
+    {
+      "name": "stock",
+      "type": "integer",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "enum",
+      "values": [
+        "stock",
+        "instock"
+      ],
+      "default": "active",
+      "required": true
+    }
+  ]
 }
 ```
 
